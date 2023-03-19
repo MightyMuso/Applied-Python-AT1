@@ -8,10 +8,6 @@ from letter import Letter
 
 class Person:
 
-    # letter = "letter.txt"
-    # fhr = open(letter, "r")
-    # fhw = open(letter, "w")
-
     def __init__(self, name, address):
         self.name = name
         self.address = address
@@ -19,21 +15,21 @@ class Person:
         self.letter = None
         # None is just a placeholder, so it can be used later to check for letter
 
-    # print is used here primarily for developer feedback
     def read_letter_from_letterbox(self):
+        """Reads the letter that is in the letterbox"""
         if self.letterbox.letter is not None:
             # The letter is now a Letter object, assuming post_letter has already occurred
             self.letterbox.letter.is_read = True
             self.letterbox.has_letter = False
 
-    # print is used here primarily for developer feedback
     def write_letter(self, message, receiver):
+        """Creates an instance of a letter if the letter from the letterbox has been read"""
         if self.letterbox.has_letter is False:
             self.letter = Letter(self, message, receiver)
             # self as an argument refers to the Person writing the letter (Bob or Ophelia)
 
-    # print is used here primarily for developer feedback
     def post_letter(self, receiver):
+        """Sends the letter instance from write_letter to the receiver's letterbox"""
         if receiver.letterbox.has_letter is False:
             receiver.letterbox.get_letter(self.letter)
             # Receiver's letterbox gets the letter from the sender

@@ -3,19 +3,17 @@ classDiagram
     class Person {
         + string name
         + string address
-        + bool letterbox
-        + post_letter()
-        + read_letter()
+        + read_letter_from_letterbox()
         + write_letter()
+        + post_letter()
     }
     class Letter {
-        - string text
-        - bool is_read
-        - read()
+        + Person sender
+        - string message
+        + Person receiver
     }
     class Letterbox {
-        + bool has_letter
-        + new_letter()
+        + contains_letter()
         + get_letter()     
     }
     Person *-- Letterbox
