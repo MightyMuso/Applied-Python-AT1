@@ -32,7 +32,7 @@ sequenceDiagram
     
     Bob ->> Letterbox: Checks for letter
     alt has letter
-        Letterbox --> Bob: Get letter
+        Letterbox --> Bob: Read letter
         Bob ->> LetterB: Writes letter
         activate LetterB
         LetterB --> Bob: Return letter
@@ -41,7 +41,7 @@ sequenceDiagram
     end
     Alice ->> Letterbox: Checks for letter
     alt has letter
-        Alice --> Letterbox: Gets letter
+        Alice --> Letterbox: Read letter
         Alice ->> LetterA: Reads letter
         Alice ->> LetterA: Writes letter
         activate LetterA

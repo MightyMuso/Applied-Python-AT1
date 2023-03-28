@@ -4,11 +4,14 @@ from letter import Letter
 class Letterbox:
 
     def __init__(self):
-        self.has_letter = False
-        self.letter = None
+        self.letterbox_letters = []
+
+    #def update_letter(self, letter: Letter):
+        #self.letters = letter
 
     def contains_letter(self):
-        return self.has_letter
+        if len(self.letterbox_letters) > 0:
+            return self.letterbox_letters
 
-    def get_letter(self, letter: Letter):
-        self.letter = letter
+    def set_letter(self, letter):
+        self.letterbox_letters.append(letter)
