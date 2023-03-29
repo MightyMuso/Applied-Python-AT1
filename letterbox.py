@@ -1,17 +1,19 @@
-from letter import Letter
 
 
 class Letterbox:
 
     def __init__(self):
-        self.letterbox_letters = []
+        self.letters = []
 
-    #def update_letter(self, letter: Letter):
-        #self.letters = letter
+    def has_letters(self):
+        return bool(self.letters)
+    # Returns ture is list is populated, returns false if not
 
-    def contains_letter(self):
-        if len(self.letterbox_letters) > 0:
-            return self.letterbox_letters
+    def get_letters(self):
+        if not self.has_letters():
+            raise IndexError("No letters")
+            # Raises an error and stops the program
+        return self.letters.pop()
 
-    def set_letter(self, letter):
-        self.letterbox_letters.append(letter)
+    def set_letters(self, letter):
+        self.letters.append(letter)

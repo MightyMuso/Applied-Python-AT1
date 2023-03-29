@@ -3,18 +3,21 @@ classDiagram
     class Person {
         + string name
         + string address
-        + read_letter_from_letterbox()
+        + read_letter()
         + write_letter()
-        + post_letter()
     }
     class Letter {
         + Person sender
-        - string message
         + Person receiver
+        - string message
+        + is_read()   
+        + read_letter()
     }
     class Letterbox {
-        + contains_letter()
-        + get_letter()     
+        + list letters
+        + has_letters()
+        + get_letters()     
+        + set_letters()
     }
     Person *-- Letterbox
     Person --> Letter: Writes
@@ -25,30 +28,22 @@ classDiagram
 ``` mermaid
 sequenceDiagram
     actor Bob
-    participant LetterB
-    participant Letterbox
-    participant LetterA
-    actor Alice
+    participant BobLetter
+    participant BobLetterbox
+    participant OpheliaLetterbox
+    participant OpheliaLetter
+    actor Ophelia
     
-    Bob ->> Letterbox: Checks for letter
-    alt has letter
-        Letterbox --> Bob: Read letter
-        Bob ->> LetterB: Writes letter
-        activate LetterB
-        LetterB --> Bob: Return letter
-        deactivate LetterB
-        Bob ->> Letterbox: Posts letter
+    Bob ->> BobLetterbox: Check for letter/s
+    alt has letter/s
+    BobLetterbox ->> Bob: Read letter/s
     end
-    Alice ->> Letterbox: Checks for letter
-    alt has letter
-        Alice --> Letterbox: Read letter
-        Alice ->> LetterA: Reads letter
-        Alice ->> LetterA: Writes letter
-        activate LetterA
-        LetterA --> Alice: Return Letter
-        deactivate LetterA
-        Alice ->> Letterbox: Posts letter
-    end
+    Bob ->> OpheliaLetterbox: Write letter/s
+    Ophelia ->> OpheliaLetterbox: Check for letter/s
+    alt has letter/s
+        OpheliaLetterbox ->> Ophelia: Read letter/s
+        end
+    Ophelia ->> BobLetterbox: Writes letter/s
 ```
 
 ``` mermaid
