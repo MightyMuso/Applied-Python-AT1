@@ -1,15 +1,21 @@
 from __future__ import annotations
 from letterbox import Letterbox
+from post_office import PostOffice
 from letter import Letter
+from encyrpted_letter import EncryptedLetter
 from time import ctime
 
 
 class Person:
 
-    def __init__(self, name, address):
+    def __init__(self, name, address, encryption_key=None):
         self.name = name
         self.address = address
         self.letterbox = Letterbox()
+        self.encryption_key = encryption_key
+        
+    def secret(self, key):
+        self.encryption_key = key
 
     def __repr__(self):
         return f"From {self.name} at {self.address}, sent {ctime()}:"
@@ -17,25 +23,21 @@ class Person:
     def read_letter(self):
         """Reads the letters that are in the letterbox"""
         if self.letterbox.has_letters():
-            while self.letterbox.has_letters():
-                letter = self.letterbox.get_letters()
-                letter.read_letter()
-            print(f"\nLetters read at {ctime()}\n")
+            letters = self.letterbox.get_letters()
+            for letter in letters:
+                if isinstance(letter, EncryptedLetter):
+                    letter.decrypt_message(self.secret)
+                else:
+                    letter.read_letter()
         else:
             print("No new letters\n")
         return self.letterbox.letters
 
-    def write_letter(self, receiver, message):
+    def write_letter(self, receiver: Person, message: str, post_office: PostOffice):
         """Creates an instance of a letter"""
-        letter = Letter(self, receiver, message)
-        if letter.sender == receiver:
+        # letter = Letter(self, receiver, message)
+        encrypted_letter = EncryptedLetter(self, receiver, message, self.encryption_key)
+        if encrypted_letter.sender is receiver:
             raise Exception("Cannot send self a letter")
         else:
-            receiver.letterbox.set_letters(letter)
-        # print("DEV :: LETTER WRITTEN")
-
-    # def post_letter(self, receiver: Person):
-    # for letter in self.letters:
-    # receiver.letterbox.set_letter(letter)
-    # receiver.letterbox.has_letters()
-    # print("DEV :: LETTER SENT")
+            post_office.set_letters(encrypted_letter)
