@@ -14,8 +14,8 @@ class Person:
         self.letterbox = Letterbox()
         self.encryption_key = encryption_key
         
-    def secret(self, key):
-        self.encryption_key = key
+    # def secret(self, key):
+        # self.encryption_key = key
 
     def __repr__(self):
         return f"From {self.name} at {self.address}, sent {ctime()}:"
@@ -23,21 +23,27 @@ class Person:
     def read_letter(self):
         """Reads the letters that are in the letterbox"""
         if self.letterbox.has_letters():
-            letters = self.letterbox.get_letters()
-            for letter in letters:
+            while self.letterbox.has_letters():
+                letter = self.letterbox.get_letters()
                 if isinstance(letter, EncryptedLetter):
-                    letter.decrypt_message(self.secret)
-                else:
+                    letter.decrypt_message(self.encryption_key)
+                    print(f"Letters read by {self.name} at {ctime()}")
+                if isinstance(letter, Letter):
                     letter.read_letter()
+                    print(f"Letters read by {self.name} at {ctime()}")
         else:
-            print("No new letters\n")
+            print(f"\n{self.name} has no new letters\n")
         return self.letterbox.letters
 
     def write_letter(self, receiver: Person, message: str, post_office: PostOffice):
         """Creates an instance of a letter"""
-        # letter = Letter(self, receiver, message)
+        letter = Letter(self, receiver, message)
         encrypted_letter = EncryptedLetter(self, receiver, message, self.encryption_key)
         if encrypted_letter.sender is receiver:
             raise Exception("Cannot send self a letter")
-        else:
+        elif isinstance(letter, EncryptedLetter):
             post_office.set_letters(encrypted_letter)
+        elif isinstance(letter, Letter):
+            post_office.set_letters(letter)
+
+

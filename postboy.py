@@ -14,7 +14,7 @@ class Postboy(Person):
         if self.post_office.has_letters():
             self.letters.extend(self.post_office.get_letters())
             # Extend adds to the list instead of overwriting it
-            print(f"\nLetters collected")
+            print(f"Letters collected by Postboy {self.name} at {ctime()}")
         else:
             print("No letters")
 
@@ -26,6 +26,7 @@ class Postboy(Person):
             for letter in self.letters:
                 recipient = letter.receiver
                 recipient.letterbox.set_letters(letter)
+                print(f"Letters delivered by Postboy {self.name} at {ctime()}")
 
 
 
