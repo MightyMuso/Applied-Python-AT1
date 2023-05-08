@@ -10,7 +10,8 @@ if __name__ == "__main__":
     charli = Postboy("Charli", post_office)
 
     bob.read_letter()
-    bob.write_letter(ophelia, "Hello", post_office)
+    bob.write_encrypted_letter(ophelia, "Hello", post_office)
+    bob.write_letter(ophelia, "hello all", post_office)
 
     charli.get_letters()
     for letter in charli.letters:
@@ -18,3 +19,6 @@ if __name__ == "__main__":
     charli.deliver_letters()
 
     ophelia.read_letter()
+    for letter in ophelia.letters:
+        print(letter)
+

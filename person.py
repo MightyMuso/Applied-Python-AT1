@@ -13,6 +13,7 @@ class Person:
         self.address = address
         self.letterbox = Letterbox()
         self.encryption_key = encryption_key
+        self.letters = []
         
     # def secret(self, key):
         # self.encryption_key = key
@@ -26,11 +27,12 @@ class Person:
             while self.letterbox.has_letters():
                 letter = self.letterbox.get_letters()
                 if isinstance(letter, EncryptedLetter):
-                    letter.decrypt_message(self.encryption_key)
-                    print(f"Letters read by {self.name} at {ctime()}")
+                    decrypted_letter = letter.decrypt_message(self.encryption_key)
+                    return self.letters.append(decrypted_letter)
                 if isinstance(letter, Letter):
-                    letter.read_letter()
-                    print(f"Letters read by {self.name} at {ctime()}")
+                    letter = letter.read_letter()
+                    return self.letters.append(letter)
+            print(f"Letters read by {self.name} at {ctime()}")
         else:
             print(f"\n{self.name} has no new letters\n")
         return self.letterbox.letters
@@ -38,12 +40,19 @@ class Person:
     def write_letter(self, receiver: Person, message: str, post_office: PostOffice):
         """Creates an instance of a letter"""
         letter = Letter(self, receiver, message)
+        if letter.sender is receiver:
+            raise Exception("Cannot send self a letter")
+        else:
+            post_office.set_letters(letter)
+
+    def write_encrypted_letter(self, receiver: Person, message: str, post_office: PostOffice):
+        """Creates an instance of a letter"""
         encrypted_letter = EncryptedLetter(self, receiver, message, self.encryption_key)
         if encrypted_letter.sender is receiver:
             raise Exception("Cannot send self a letter")
-        elif isinstance(letter, EncryptedLetter):
+        else:
             post_office.set_letters(encrypted_letter)
-        elif isinstance(letter, Letter):
-            post_office.set_letters(letter)
+
+
 
 
